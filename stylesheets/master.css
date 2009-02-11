@@ -4,6 +4,8 @@ body {
   color: #6C6E58;
 }
 
+.more { font-size: 0.7em;}
+
 img.right { 
   float: right;
   margin: 15px;
