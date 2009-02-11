@@ -1,0 +1,26 @@
+---
+layout: post
+title: Ruby, Python and Closures
+---
+<p class="note_content clearfix">
+<p class="note_content clearfix">I was talking to someone the other day about the Django vs. Rails web frameworks. These are two similar web frameworks that are written in Python and Ruby, respectively. I had played with Django for a small project once, just to try it out - I like testing web frameworks that are becoming popular from time to time to see if there is a concept that's really clever or that I could use in what I'm working in. I'm pretty framework agnostic in the grand scheme of things - I use Rails because it's the best one I've seen yet and I'm getting pretty good at it, but I'd switch without hesitation if something better came along.<br/>
+So, I started looking again at Django and there are some big differences but it seems like there's no killer distinction either way. From the little I yet know, I like the built in admin stuff and no baked in JS in Django, I like the migrations and testing support better in Rails. I'll continue to play with Django a bit and see if I can find some more interesting comparisons a bit later.
+However, one thing I've found right off the bat that seems really huge that I would really miss if I switched over is the lack of <a href="http://www.facebook.com/note_redirect.php?note_id=2322343764&amp;url=http%3A%2F%2Fmartinfowler.com%2Fbliki%2FClosure.html&amp;h=11377dc567b7084de8c0045ad53784f4" target="_blank" title="http://martinfowler.com/bliki/Closure.html">closures</a> (blocks). This is a language thing, I haven't used Python in several years and I have been using Ruby for several years now and I've really gotten used to and become quite fond the concept of closures in Ruby. It seems they are basically completely missing in Python. There is a way to sort of <a href="http://www.facebook.com/note_redirect.php?note_id=2322343764&amp;url=http%3A%2F%2Fivan.truemesh.com%2Farchives%2F000392.html&amp;h=9500adf31cd334a0b4b83def2ca1dc80" target="_blank" title="http://ivan.truemesh.com/archives/000392.html">hack out comparable functionality</a>, via the lambda function, just like in PHP, but it's really quite ugly.<br/>
+<code>
+// RUBY
+emps.select {|e| e.isManager}<br/>
+// PYTHON
+filter(lambda e: e.isManager, emps)<br/>
+</code><br/>
+It's not that it's that much longer, it's just that it doesn't read as well. I see these fantastic, clean and simple DSLs being written in Ruby all the time that just makes everything written in it look like pseudocode, where I don't see that at all in Python. I'm also somewhat surprised that there doesn't seem to be iterative classes in Python.<br/>
+<code>// RUBY
+array.each do |i|
+puts i
+end<br/>
+// PYTHON
+for i in array:
+print i<br/>
+</code>
+Why don't collections have generic methods that iterate and aggregate the data? It just seems like it's more procedural in a lot of ways where Ruby takes a much more object oriented approach that looks cleaner and more elegant to me. You can do <a href="http://www.facebook.com/note_redirect.php?note_id=2322343764&amp;url=http%3A%2F%2Fwww-128.ibm.com%2Fdeveloperworks%2Flibrary%2Fl-pycon.html&amp;h=03e65b089c099167e32f005fa6102555" target="_blank" title="http://www-128.ibm.com/developerworks/library/l-pycon.html">stuff like this</a> in Python, but it's just not really the same, is it?<br/>
+Of course, <a href="http://www.facebook.com/note_redirect.php?note_id=2322343764&amp;url=http%3A%2F%2Fgroovie.org%2Farticles%2F2005%2F12%2F08%2Fis-rails-a-dsl-what-is-a-dsl-and-is-it-possible-in-python&amp;h=aefb0c74450700af2bbd0a8f3f4bacd5" target="_blank" title="http://groovie.org/articles/2005/12/08/is-rails-a-dsl-what-is-a-dsl-and-is-it-possible-in-python">this guy</a> seems to be arguing the opposite, but only uses Zope, which I'm not a huge fan of, to make his point (which even he qualifies).<br/>
+However, I have read so much about it that is positive and glowing, I feel that I am obviously missing something. I'll continue to play with Django and see if I can't expound.

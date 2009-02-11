@@ -1,0 +1,87 @@
+---
+layout: post
+title: Fuzed and EC2
+---
+First of all, this post is about 2 things that rock. One is <a href="http://github.com/KirinDave/fuzed/tree/master">Fuzed</a>, the new Erlang web glue that runs Rails on the Erlang-based Yaws web server, put together by <a href="http://github.com/mojombo">Tom Preston Warner</a> and <a href="http://github.com/KirinDave">Dave Fayram</a> of <a href="http://powerset.com">Powerset</a>. The other is <a href="http://aws.amazon.com/ec2">Amazon EC2</a>, which is a big, sneakily expensive nerd playland. I became interested in Fuzed at the talk I heard on it at RailsConf by Tom and Dave.<br/>
+I downloaded the <a href="http://github.com/KirinDave/fuzed/tree/master">Fuzed software</a> and compiled it and got it running on my local machine, which was a bit more complex than was neccesary, since I needed 3 nodes (a faceplate, a master and a backend) to get it running. So, I thought I would see what it could really do in a real, multi-node environment. That's where EC2 comes in.<br/>
+I setup two (now public) EC2 AMIs, one 32-bit (ami-1da54174) and the other 64-bit (ami-64a6420d), (in EC2, you need a 64 bit version to run the bigger instances) each with Erlang and Fuzed and Rails and an example Rails app and HAProxy all installed on it. Then I started playing with different configurations.<br/>
+For all of these examples, I'm using the Kronos rails app (a simple frontend to Chronic running on Rails v1.2) in development mode (just to make it slower) with no database. So, it is not a totally normal setup, but I wanted to see how to scale a slowish, difficult to cache app with Fuzed.<br/>
+<h3>Control Group : our trusty mongrels</h3><br/>
+The first thing I did, in order to get a sort of benchmark of the Rails app itself was to run a normal setup on a small EC2 slice. I started up an m1.small slice (if you aren't familiar with the various EC2 slice sizes, see <a href="http://www.amazon.com/Instances-EC2-AWS/b/ref=sc_fe_c_0_201590011_2?ie=UTF8&node=370375011&no=201590011&me=A36L942TSJ2AJA">here</a>) and ran the app in 3 mongrels proxied behind nginx.<br/>
+<ul>
+<li>single server running a small mongrel cluster
+</ul><br/>
+This setup did pretty well under smallish loads - I was able to serve 9.0 requests per second with 5 simultaneous users[#/sec] with 95% of the requests taking less than a second, which means that I could pretty readily serve 30k requests in an hour, or somewhere around 500k a day, as long as it's steady traffic.<br/>
+<strong>cost:</strong> $72/month
+<strong>performance</strong>: max 15M page views/month, 500/min max<br/>
+(obviously, these numbers are highly dependent on the app and spikes in traffic and such, but they should help us compare to the other setups)<br/>
+<h3>Configuration 2 : 3 servers</h3><br/>
+So that gives us a baseline. Now, my first pass at a Fuzed setup was with 3 servers - one faceplate, one master node and one rails node with 3 handlers running in it - all 'm1.small' sized. This is sort of a weird setup, since we're still only dealing with 3 rails handlers, but now have added the overhead of the Fuzed master node and frontend listener.<br/>
+<ul>
+<li>one faceplate
+<li>one master
+<li>one small rails node (3 handlers)
+</ul><br/>
+And it turns out, that we get roughly the same overall performance here - about 10 requests/second sustained, though I mistakenly tested it with 10 simultaneous users instead, so the page loads were a bit slower on avg, but still not bad.<br/>
+<strong>cost</strong>: 3 small = $215 / month
+<strong>performance:</strong> max 15M page views/month, 500/min max<br/>
+(though I'm fairly certain I could have run the master, faceplate and rails node all on the same slice and gotten much the same performance, so it's not <em>really</em> 3 times more expensive than the mongrels...)<br/>
+<h3>Configuration 3 : 4 servers</h3><br/>
+So now I come to the fun part of Fuzed, the auto-configuration. I simply spun a High-CPU Medium Instance ($0.20/hr, 5 CU), started Fuzed on it with 15 Rails handlers (my formula was consistently 3 Rails handlers per EC2 Compute Unit), bringing my total number of Rails handlers to 18.<br/>
+Now I brought my concurrency up to 100 and got 56 req/sec from the stack, though the average response time was a bit higher, at about 1.5 - 2 seconds per request. That's unacceptably high, so for the performance calculations, I'll assume limits of closer to 40 req/sec.<br/>
+<ul>
+<li>one faceplate
+<li>one master
+<li>one small rails node (3 handlers)
+<li>one high-cpu medium rails node (15 handlers)
+</ul><br/>
+<strong>cost:</strong> $360/month + $20 bandwidth = $380/mo
+<strong>performance:</strong> 85M page views/month, 2500/min max<br/>
+<h3>Configuration 4 : 5 servers</h3><br/>
+Now I decided to bring in the big boys. Amazon has brand new High-CPU Extra Large Instances ($0.80/hr) with 7 GB of memory and 20 EC2 Compute Units (8 virtual cores with 2.5 EC2 Compute Units each), which means I should be able to run 60 Rails handlers on each one. So, I fired up one of these and attached it as a Rails node, then brought up two more small instances, one as a second faceplate and one as a frontend server running haproxy round-robining back to the two faceplates. This entire reconfiguration took me about 5 minutes to do, most of it spent waiting for the instances to come up.<br/>
+<ul>
+<li>one master
+<li>one haproxy
+<li>two faceplates
+<li>one small rails node (3 handlers)
+<li>one high-cpu medium rails node (15 handlers)
+<li>one high-cpu extra large rails node (60 handlers)
+</ul><br/>
+However, now my stack was able to fairly easily handle 140 req/sec with 90% of them coming in under a second. This means that I can take sustained loads of close to 500k hits per hour on an uncached Rails app in development mode, 20 minutes after I was running it on a single slice.<br/>
+<strong>cost:</strong> 935/month + $85 bw = $1020/month
+<strong>performance:</strong> max 300M page views/month, 8500/min max<br/>
+<h3>Configuration 5 : 13 servers</h3><br/>
+Just to see how far I could take this before I wasn't willing to pay the hourly rate for this test, I spun up another faceplate and 5 more high cpu extra large servers for a grand total of:<br/>
+<ul>
+<li>one small master
+<li>one small haproxy
+<li>three small faceplates
+<li>one small rails node (3 handlers)
+<li>one high-cpu medium rails node (15 handlers)
+<li>six high-cpu extra large rails node (6*60 = 360 handlers)
+</ul><br/>
+At this point, adding new nodes is pretty trivial - it took about 10 minutes to get here from the previous setup, most of the time spent reconfiguring haproxy for the third faceplate.<br/>
+Now I'm hitting other breakdown points in my testing setup - I can pretty easily get about 475 req/second from the stack, but it appears that the bottleneck is now in the faceplate layer and possibly elsewhere, but 475 req/second is pretty dang fast, especially for a site with no caching and no static requests at all - all 475 of those invoke the full Rails stack in development mode, no less. Plus, it's still really responsive to me even as I'm slamming it with ab in the background.<br/>
+475 hits per second translates into roughly 1.5M hits per hour, 35M a day, etc. Obviously these estimations are getting pretty ridiculous - so many other things come up before you hit this point that the comparison is only interesting from a relative view to the other configurations, but I did have fun setting it up and beating the crap out of this with ab.<br/>
+<strong>cost:</strong> 3816/month + $342 bw = $4158.00/month
+<strong>performance:</strong> max 1000M page views/month, ~28,500/min max<br/>
+<h3>Conclusion</h3><br/>
+Now that I've taken this to it's illogical conclusion, it's fun to look back at what we've done. The point of the post is not to say "Fuzed will solve all Rails scaling problems", because a) I don't know enough about running any actual huge scale websites to have my opinion be worth a lick and b) this is a stupid-simple Rails app - any complexity you add to your app will give you new and interesting problems at scale.<br/>
+However, what is fun to note is how easily Fuzed made it for me to take a simple Rails app running in development mode and make it serve 5000 dynamic pages in 10 seconds flat with no failed requests, and that it took me more time to write this blog post than it did to get it there.<br/>
+All of this was automated with a little tool I wrote called <a href="http://github.com/schacon/fuzec2">FuzEc2</a>, pronounced <em>un-pronou-ncab-le</em>, which basically just uses EC2::Base and Net::SSH to automate all the Fuzed and HAProxy setup steps. The first time I ran through this stuff I did it all manually and it still only took a couple hours, with FuzEc2, it took about 30 minutes.  The AMIs are public, so if you want to try this for yourself, just download my FuzEc2 script, replace the example variables with your own AWS keys and such, and start spinning them up!<br/>
+You can watch a video of me doing another, more limited run of this after the jump, which has an example of using the script.<br/>
+<!-- more --><br/>
+  <div class="media">
+<script type="text/javascript" src="/javascripts/flashembed.min.js"></script> 
+    <script>
+    window.onload = function() {  
+     flashembed("re2", 
+     {  src:"/flowplayer/FlowPlayerLight.swf", width: 600, height: 430 },
+     { config: {  autoPlay: false, autoBuffering: false,
+     videoFile: "http://s3.amazonaws.com/chacon/fuzec2.flv"
+     } } );
+    }
+    </script>
+    <div id="re2"></div>
+  </div>
+  

@@ -1,0 +1,84 @@
+---
+layout: post
+title: Ruby Reporting with Munger
+---
+I started in on a story at work where I needed to add some reports on one of our internal applications.  In the past, I have just done some query and then iterated over it in the view, creating a report manually, but it seemed that I was always doing the same sorts of operations and that there should be some tool that makes that all easier.  So, I started searching for reporting tools in ruby, googling and asking friends and the only thing I found was <a href="http://rubyreports.org/">Ruport</a>.<br/>
+It seemed pretty cool and I was really impressed with the demos and my first few passes, but after a half day of struggling, I just could not force out of it the reports I was looking for.  It did grouping weirdly, I didn't seem to have easy control over the rendering of the html, I couldn't highlight cells, the pivoting functionality was destructive to other row data and you couldn't change more than one column in a single pass.  <br/>
+My biggest problem was that the data manipulation and the report formatting was so tightly coupled.  It was an interesting api, so I considered hacking on it, but it didn't seem too complex and I wanted the architecture to have a cleaner separation of what I feel are the three major steps of reporting - data manipulation, report formatting and output rendering.  So, I decided to start my own project and a day and a half later, I had <a href="http://github.com/schacon/munger/wikis">Munger</a>, the alternative ruby reporting library.<br/>
+The library is about two days old, but it's pretty usable already.  If you'd like to help out, <a href="http://github.com/schacon/munger">fork and hack</a>!<br/>
+<strong>Simple Example</strong><br/>
+<link rel="stylesheet" type="text/css" href="http://drnicwilliams.com/external/CodeHighlighter/styles.css"></link>  
+<script src="http://drnicwilliams.com/external/CodeHighlighter/clean_tumblr_pre.js"></script> <br/>
+Here is a simple example.<br/>
+<pre><code class="ruby">result = AdAirings.find(:all)
+report = Munger::Report.from_data(result).process
+puts Munger::Render.to_text(report)
+</code></pre><br/>
+will result in : <br/>
+<pre>
+|airtime | airdate    | clicks | advert | 
+------------------------------------------
+|15      | 2008-01-01 | 301    | spot 1 | 
+|30      | 2008-01-02 | 199    | spot 1 | 
+|30      | 2008-01-03 | 234    | spot 1 | 
+|15      | 2008-01-04 | 342    | spot 1 | 
+|30      | 2008-01-01 | 172    | spot 2 | 
+|15      | 2008-01-02 | 217    | spot 2 | 
+|90      | 2008-01-03 | 1023   | spot 2 | 
+|30      | 2008-01-04 | 321    | spot 2 | 
+|60      | 2008-01-01 | 512    | spot 3 | 
+|30      | 2008-01-02 | 813    | spot 3 | 
+|15      | 2008-01-03 | 333    | spot 3 |
+</pre>
+ 
+<strong>A Simple Pivot</strong><br/>
+<pre><code class="ruby">result = AdAirings.find(:all)
+data = Munger::Data.load_data(result)<br/>
+new_columns = data.pivot('airdate', 'advert', 'clicks')<br/>
+report = Munger::Report.from_data(data).columns([:advert] + new_columns.sort).process
+puts Munger::Render.to_text(report)
+</code></pre><br/>
+becomes:<br/>
+<pre>
+|advert | 2008-01-01 | 2008-01-02 | 2008-01-03 | 2008-01-04 | 
+--------------------------------------------------------------
+|Spot 1 | 301        | 199        | 234        | 342        | 
+|Spot 2 | 172        | 217        | 1023       | 321        | 
+|Spot 3 | 512        | 813        | 333        |            | 
+</pre><br/>
+<strong>A More Complex Example</strong><br/>
+<pre><code class="ruby">result = AdAirings.find(:all)<br/>
+data = Munger::Data.load_data(result)
+data.add_columns([:advert, :rate]) do |row| 
+  rate = (row.clicks / row.airtime)
+  [row.advert.capitalize, rate]
+end<br/>
+report = Munger::Report.from_data(data)
+report.sort('airtime').subgroup('airtime')
+report.aggregate(Proc.new {|arr| arr.inject(0) {|total, i| i * i + (total - 30) }} => :airtime, 
+                        :sum => :rate)<br/>
+puts Munger::Render.to_text(report)
+</code></pre><br/>
+gives us :<br/>
+<pre>
+|Spot   | Rate | Air Date   | Airtime | 
+----------------------------------------
+|Spot 2 | 14   | 2008-01-02 | 15      | 
+|Spot 1 | 20   | 2008-01-01 | 15      | 
+|Spot 3 | 22   | 2008-01-03 | 15      | 
+|Spot 1 | 22   | 2008-01-04 | 15      | 
+|       | 78   |            | 780     | 
+|Spot 2 | 5    | 2008-01-01 | 30      | 
+|Spot 1 | 6    | 2008-01-02 | 30      | 
+|Spot 1 | 7    | 2008-01-03 | 30      | 
+|Spot 2 | 10   | 2008-01-04 | 30      | 
+|Spot 3 | 27   | 2008-01-02 | 30      | 
+|       | 55   |            | 4350    | 
+|Spot 3 | 8    | 2008-01-01 | 60      | 
+|       | 8    |            | 3570    | 
+|Spot 2 | 11   | 2008-01-03 | 90      | 
+|       | 11   |            | 8070    | 
+|       | 152  |            | 16770   | 
+</pre><br/>
+<strong>Wrapping Up</strong><br/>
+There is also cool cell and row styling, html rendering, etc, so <a href="http://github.com/schacon/munger/wikis/home">check it out</a>.<br/>

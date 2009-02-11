@@ -1,0 +1,7 @@
+---
+layout: post
+title: Git-Ruby Success
+---
+I just got my new <a href="http://github.com/schacon/git-ruby/tree/master">Git-Ruby</a> library to add files and commit a new tree properly in pure ruby. My 'gitr' command line interface is getting pretty close to being usable as a full git replacement in simple circumstances.<br/>
+The thing I'm not doing right now is using the index file properly.  I haven't quite figured out what that format is in - my C is a bit rusty and going through the source has not blessed me with the answers to what the heck is going on there yet, but hopefully I'll get there soon.  However, in the meantime, turns out I don't <em>really</em> need to use that to do most of the stuff in git.  I can read and write the object database perfectly fine, so I just ended up re-implementing the index functionality from scratch and it works well enough.<br/>
+If anyone out there is really good at C and wants to help me with re-implementing some of the index features - it will probably be really helpful when I get to the merge / diff stuff.  Let me know if you can help out.

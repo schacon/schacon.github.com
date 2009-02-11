@@ -1,0 +1,14 @@
+---
+layout: post
+title: Ruby/Git and gitweb.rb
+---
+Lately I've been working a lot on <a href="http://jointheconversation.org/rubygit" title="Ruby/Git homepage">Ruby/Git</a>, which is a library for using Git in Ruby.  It's now about at the point that I can integrate it into the stuff I'm doing at my work (we were doing some rather advanced read-tree/write-tree stuff), but I wanted another target for it so I can see first hand how the library works on real-world situations.<br/>
+So, in the last two days I wrote <a href="http://repo.or.cz/w/rubygit.git?a=blob_plain;f=camping/gitweb.rb;h=6322e17e1dfdc501f012785dcf07ce87d63360ed" title="gitweb.rb">gitweb.rb</a>, which is a <a href="http://camping.rubyforge.org/files/README.html">Camping</a> app, weighing in at just 365 lines of ruby code for the whole thing.  (Though, it's not really a tiny file, since I embedded code from the <a href="http://shjs.sourceforge.net/">SHJS project</a> for syntax highlighting, which is cool but not tiny.)<br/>
+It provides a similar interface onto a Git repo as the <a href="http://git.kernel.org/gitweb.cgi?p=git/git.git;a=tree;f=gitweb;h=ba2bdcc0fbeaebd8949f092dbd780bc24c326292;hb=dee1b1ea9e1b0b889d9c53c2501e7f6250703341">perl version</a> of  <a href="http://repo.or.cz/w/rubygit.git">gitweb</a>, which is bundled with git itself.  It uses my Ruby/Git bindings to do everything and it was a great test for me.  My next Ruby/Git deal will be to reimplement some of the core stuff in either pure ruby or RubyInline or C bindings - my goal will be to get gitweb.rb to be able to run without the git binary present at all - no system calls forked.<br/>
+Anyhow, here is what it looks like.<br/>
+<a href="http://jointheconversation.org/wp-content/uploads/2007/11/picture-1.png" title="gitweb.rb interface"><img src="http://jointheconversation.org/wp-content/uploads/2007/11/picture-1.png" alt="gitweb.rb interface" height="270" width="419" /></a><br/>
+<br clear="all" /><br/>
+You can download it <a href="http://repo.or.cz/w/rubygit.git?a=blob_plain;f=camping/gitweb.rb;h=6322e17e1dfdc501f012785dcf07ce87d63360ed" title="gitweb.rb">here</a>, and run it like this:
+<pre>&gt; gem install camping git
+&gt; camping rubyweb.rb</pre>
+Then point it to your repositories, and you're good.

@@ -1,0 +1,13 @@
+---
+layout: post
+title: gitr - pure ruby git command line client
+---
+I've been working on getting as much as possible of my Ruby/Git library to run in pure ruby rather than forking out to the git binary, and luckily the guys that started the gitrb project some time ago let me incorporate their code into mine.  Now I have quite a bit of my gitweb camping app running without calling 'git' at all.  Only the archive and diff methods are currently invoked - everything else is in pure ruby.<br/>
+The other cool thing I get from this that I've done a simple command line client that does a number of git functions without needing git compiled on the machine at all:
+<pre>
+$ gitr log
+$ gitr branches
+$ gitr ls-tree (sha)
+$ gitr cat-file (sha)
+$ gitr rev-parse v1.0.2</pre>
+All of those are run without forking out to the git binary. Sweet. You can get this code at my <a href="http://repo.or.cz/w/rubygit.git">Repo.or.cz</a> Ruby/Git repo.  I will release it as a new gem soon.

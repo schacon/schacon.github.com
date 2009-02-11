@@ -1,0 +1,25 @@
+---
+layout: post
+title: TicGit and a new Git gem
+---
+I just put my new gitty project, <a href="http://github.com/schacon/ticgit">TicGit</a> up at <a href="http://github.com/schacon">GitHub</a> for all to enjoy.  I'll release a gem to Rubyforge in a few days, but for those of you who are curious, you can build and install your own gem pretty easily. <br/>
+It is basically a simple command line client that keeps simple ticket information in a new bare branch. It doesn't keep any files in your working directory.  All the git operations on the new 'ticgit' branch are wrapped by the 'ti' command line client and should be transparent to you.  Tickets can be created and worked on offline and pushed to central repositories.  Right now, the ticgit branch will have to be merged manually (ie: git merge ticgit origin/ticgit), but I'll fix that pretty soon.  The way the project keeps it's data in git, there should not ever be any merge conflicts, since I never edit files.  <br/>
+So far, I like the way it's turning out and I'm keeping my bugs and features for TicGit in the ticgit repository.  You can see them by running 'ti list' from a new checkout.<br/>
+<pre>
+#>ti list -s open<br/>
+     # TicId  Title                     State Date  Assgn    Tags                
+--------------------------------------------------------------------------------
+     1 9ebd07 add attachment to ticket  open  03/22 schacon  attach,feature      
+     2 6ca8be download attached file    open  03/22 schacon  attach,feature      
+     3 9b83ea general tag management    open  03/22 schacon  feature,tags        
+     4 94f24e show expanded comments    open  03/22 schacon  feature,ticket      
+     5 f3dd9b remove a ticket           open  03/22 schacon  feature,ticket      
+     6 e1629e improved cli support      open  03/22 schacon  cli,feature         
+     7 9c0804 find the git directory pr open  03/22 schacon  bug                 
+     8 28c3fa start web ui              open  03/22 schacon  feature,webapp      
+     9 9b0e09 link to a git object      open  03/22 schacon  feature,ticket      
+*   10 93ef93 change ticket assignment  open  03/22 schacon  feature             
+    11 6f9e7c priority for ticket       open  03/23 schacon  feature,ticket    
+</pre><br/>
+If you're interested, you can see a bunch of examples and more documentation on the <a href="http://github.com/schacon/ticgit/wikis">TicGit GitHub wiki</a>.<br/>
+The only requirement is my <a href="http://git.rubyforge.com">Git gem</a>, but you'll need version 1.0.5, which I also just released today, so run another 'sudo gem install git' if you already have an older version installed.  Among improvements in 1.0.5 : gc, each_conflict, ls_tree, stash support, advanced logging, tree_depth, checkout_file, bare branch support, more testing and some optimization. I'm happy to say that more than half of this release was provided by patches from others - <a href="http://github.com/josh">Joshua Peek</a>, Cassie Schmitz, <a href="http://github.com/ericgoodwin">Eric Goodwin</a>, Shu-yu Guo, Bernd Ahlers, Mateusz Jedruch, Skaar and Nick Hengeveld - thanks all!

@@ -1,0 +1,19 @@
+---
+layout: post
+title: Worlds Smallest Rails Contributor
+---
+<em>(warning, the following blog post is exceedingly geeky...)</em><br/>
+This is about the smallest thing I could have possibly done, but I am now a  Ruby on Rails contributor.<br/>
+I found a bug with Rails <a href="http://api.rubyonrails.org/classes/ActiveRecord/Calculations/ClassMethods.html">Calculations</a>
+where I was trying to do this :<br/>
+<code>
+@object.linking_tables.count(:conditions =&gt; ['fieldname = ?', 1])
+</code><br/>
+and it was failing with malformed SQL.  Apparently, in 1.1, it is only designed to do stuff like this :<br/>
+<code>
+ObjectClass.count(:conditions =&gt; ['fieldname = ?', 1])
+</code><br/>
+Which may not look that different, but it really loses a lot of power - the instantiated object and the association are both scope limiters on the query.<br/>
+So, I thought I'd be all cool and make the former work - so I setup a patch environment and ran the base AR tests and one broke. I figured out what it was that broke and generated a tiny (tiny) patch and submitted it and it was applied to the trunk a few minutes ago.  So, now I'm the worlds smallest Rails contributor:<br/>
+<a href="http://dev.rubyonrails.org/ticket/5268">http://dev.rubyonrails.org/ticket/5268</a><br/>
+However, I then soon found out that the Calculations have already been modified in the way I was hoping, after I wrote a few tests and they all passed fine.  So, edge Rails works the way I hoped, but I don't get to contribute in a substantial way.  Well, at least I know something that will be in 1.2.  Hopefully next time I can do something more useful.

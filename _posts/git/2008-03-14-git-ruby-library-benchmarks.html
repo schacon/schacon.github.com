@@ -1,0 +1,23 @@
+---
+layout: post
+title: Git-Ruby Library Benchmarks
+---
+I just finished a simple benchmark of the various Git ruby libraries out there, my <a href="http://github.com/schacon/ruby-git">git gem</a>, <a href="http://errfree.com">Err's Grit</a> (as used by <a href="http://github.com">GitHub</a>, and my new pure ruby Git lib, <a href="http://github.com/schacon/git-ruby">Git-Ruby</a>.  Turns out that because the other two libraries are running system calls for everything, the pure ruby version is pretty dang fast:<br/>
+<pre>
+<a href="http://github.com/schacon/ruby-git">Git Gem</a>:
+             user     system      total        real
+objects   0.030000   0.130000   0.730000 (  0.759323)
+log       0.480000   0.420000   2.210000 (  2.258663)
+branch    0.120000   0.920000   5.450000 (  5.434611)<br/>
+<a href="http://github.com/schacon/grit">Grit</a> :
+             user     system      total        real
+objects   0.020000   0.120000   0.590000 (  0.587605)
+log       0.280000   0.430000   1.990000 (  1.958004)
+branch    0.020000   0.160000   0.850000 (  0.877369)<br/>
+<a href="http://github.com/schacon/git-ruby"><b>Git-Ruby</b></a> (pure ruby) :
+             user     system      total        real
+objects   0.030000   0.010000   0.040000 (  0.049364)
+log       0.950000   0.100000   1.050000 (  1.059527)
+branch    0.130000   0.070000   0.200000 (  0.191696)
+</pre><br/>
+Sweet.  Still a lot of work to do, though.

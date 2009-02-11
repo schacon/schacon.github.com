@@ -1,0 +1,137 @@
+---
+layout: post
+title: On Mercurial 
+---
+It seems that a rather popular theme when reading about distributed SCMs on a blog post is that someone says that they hate or love Git, where the hate  is generally that it's hard to learn, unintuitive, etc.  Then, generally  without exception, a mercurial user jumps in on the comments and says something like "I tried Git, but it was impossible to learn, so I'm using Mercurial and it's easy-peasy".  That person is wrong.<br/>
+Git is not hard to learn.  At least, not any more difficult than Mercurial is.  There, I said it.  If you think that Git is like learning Linux - powerful but steep in the curve of learning, while Mercurial is like Mac - more constrained, but far easier to learn, you have either tried the systems a long time ago or have never really tried them and are just repeating the Merc FUD.<br/>
+Don't get me wrong, it certainly used to be this way.  My point here is that if you take a fresh look at the two systems, the majority of beginner to intermediate tasks that you have to do with a DSCM are very similar in both systems and being sufficiently familiar with one takes very little effort to use the other.<br/>
+I state this because of the incredibly scientific research I concluded tonight, wherein I used hg.  I have been a Git guy for several years now and have never previously touched mercurial, and I dove right in a few hours ago and took some notes so I could share what is _not_ intuitive in hg, even from an advanced DSCM user, and to give it a fair shake.  Here is what I have concluded:<br/>
+<ul>
+<li> Git and Mercurial have nearly the same learning curve
+<li> Some things are easier / more intuitive in Git, and some in Hg
+<li> Both systems have a similar number of overall common commands, of which 90% are identically named
+<li> You can pretty easily move from one to the other for basic tasks
+</ul><br/>
+Let me get into a bit of detail about what I found.  As my first piece of evidence, I will look at the help menu.  If you simply type 'git' or 'hg' on the command line, hg will give you the following 17 commands :<br/>
+<pre>
+ add        add the specified files on the next commit
+ annotate   show changeset information per file line
+ clone      make a copy of an existing repository
+ commit     commit the specified files or all outstanding changes
+ diff       diff repository (or selected files)
+ export     dump the header and diffs for one or more changesets
+ init       create a new repository in the given directory
+ log        show revision history of entire repository or files
+ merge      merge working directory with another revision
+ parents    show the parents of the working dir or revision
+ pull       pull changes from the specified source
+ push       push changes to the specified destination
+ remove     remove the specified files on the next commit
+ serve      export the repository via HTTP
+ status     show changed files in the working directory
+ update     update working directory
+</pre><br/>
+and Git will give you the following 21 commands:<br/>
+<pre>
+   add        Add file contents to the index
+   bisect     Find the change that introduced a bug by binary search
+   branch     List, create, or delete branches
+   checkout   Checkout a branch or paths to the working tree
+   clone      Clone a repository into a new directory
+   commit     Record changes to the repository
+   diff       Show changes between commits, commit and working tree
+   fetch      Download objects and refs from another repository
+   grep       Print lines matching a pattern
+   init       Create an empty git repository 
+   log        Show commit logs
+   merge      Join two or more development histories together
+   mv         Move or rename a file, a directory, or a symlink
+   pull       Fetch from and merge with another repository 
+   push       Update remote refs along with associated objects
+   rebase     Forward-port local commits to the updated 
+   reset      Reset current HEAD to the specified state
+   rm         Remove files from the working tree and from index
+   show       Show various types of objects
+   status     Show the working tree status
+   tag        Create, list, delete or verify a tag object 
+</pre><br/>
+Take a good look at that, because there is not a lot of frickin' difference.  If you know one, you <em>basically</em> know the other.  I can attest to that because I didn't need to look up a lot to figure out how to use hg - not because it's so super simple, but because it's nearly identical (for the basic things).<br/>
+One of the things I hear a lot is that Git has a billion esoteric commands that are cryptic, magical and impossible to remember.  That... is true.  However, it doesn't matter.  What matters are the porcelain commands that are meant to be used by the end user, and there are about 30 of them - the 21 above plus some special stuff like 'stash' and 'submodule'.  On the other hand, if you type 'hg help', you get a list of 41 commands.  <br/>
+Now, there are another 100 commands that git will respond to, but they are plumbing commands and are just there in case you want to build something novel - using them is the equivalent of opening up Mercurial and modifying the source.  I happen to use a bunch of them to do some really weird stuff that is just not possible in Hg, but there is no reason users even need to know they're there.  They are not in the path (as of 1.6) - out of sight, out of mind.  As far as a new user is concerned, Git is simpler in it's command set then Hg.<br/>
+Now, let's look at a simple use of hg - creating a new hg repo and commiting and import:<br/>
+<pre>
+mkdir test1; cd test1
+hg init
+cp [files] .
+hg add .
+hg commit -m 'my message'
+hg log
+</pre><br/>
+Now, let's look at the same thing in Git:<br/>
+<pre>
+s/hg/git/g
+</pre><br/>
+It's exactly the same thing.  <code>clone, add, annotate*, commit, diff, init, log, merge*, pull*, push, rm, status</code> - these are all basically identical in the two systems. (annotate is generally called 'blame' in git, but 'git annotate' will also work, and merge/pull work slightly differently but do largely the same type of thing)  This is the core of both systems, these commands are what you spend nearly all of your time doing, and they are <em>almost exactly the same</em>.<br/>
+Now for the fun part.<br/>
+<h3>Things that are Confusing in Mercurial</h3>
+<br/><br/>
+I get to listen to Mercs take the high ground all the time about how git is hard to learn and the UI is confusing - now it's my turn.  Here are the things I had to go look up because I didn't get it and even the 'hg help' wasn't helping.<br/>
+<strong>You have to set your username via 'vim ~/.hgrc'</strong><br/>
+In Git, one of the first things you do is :<br/>
+<pre>
+$ git config --global user.name 'Scott Chacon'
+$ git config --global user.email 'schacon@gmail.com'
+</pre><br/>
+In Mercurial, far as I can figure, you gotta do that by hand.  There is an 'hg showconfig', but no setter (again, far as I can tell). That means you have to look up a snippet of what the actual config format is and paste that into your ~/.hgrc file manually before your commits will stop complaining that no user is set. PITA.<br/>
+<strong>There is no staging area</strong><br/>
+This is really just a Gitter wondering how Mercs do it, but the lack of a staging area is something I didn't know I would miss.  The lack of control over what versions of what files you're committing seems like a huge, huge missing feature to me (again, only because I'm used to Git).  People argue that it keeps it simpler, but you can get the equivalent functionality by adding a '-a' to the 'git commit' command every time, which a lot of people do.  In my initial foray, that was the only place where Git was actually more complicated than Hg - ignoring the staging functionality takes an extra '-a'.<br/>
+<strong>How do I setup a remote repository?</strong><br/>
+OK, I have this Hg repository, and I want to create a remote one and push to it.  I know I am being an idiot here, but I literally could not figure out how to do this short of doing an 'hg clone <url>' and looking at the .hg/hgrc file to see what was added to allow 'hg push' to know where to go.  I figured out that you could specify it on the command line, but the thought of typing a url every time I want to push made me throw up a little in my mouth.  I could not find the equivalent of a 'git remote' where I could add and manipulate my remote repositories without editing the '.hg/hgrc' file.  I couldn't find it in the hg book, either.  Perhaps in the comments someone could enlighten me.  <br/>
+I setup a repo on BitBucket and the instructions on how to push into it were simply 'clone this', and then I assume you're supposed to pull your files in and then push, but what if you already have a repo?  This drove me nuts, and I still don't know how to do it.<br/>
+Then, for Act II of this little play, I wanted to know how to have another remote - say I want to be able to push my repo to my staging server for deployment and my central server for collaboration.  Again, could not figure out how to add it - I ventured a guess and just copied the line in the config file and gave it a different name and that seems to have worked, but do you really have to edit the file to add a remote repository?<br/>
+It also appears that something that happens incredibly frequently in your typical day is much more complex in Hg than Git - pulling.  In Mercurial, you have to do three commands each time you want to pull (and merge) changes from your remote repository:<br/>
+<pre>
+1  hg pull
+2  hg merge
+3  hg commit -m 'Merged remote changes'
+</pre><br/>
+In Git, that is effectively done with 'git pull'.  Now, you <em>can</em> do that with Git:<br/>
+<pre>
+1  git fetch
+2  git merge --no-commit
+3  git commit -m 'Merged remote changes'
+</pre><br/>
+But WHY?  (as an amusing side-note, there is a Merc plugin that adds an 'hg fetch' command that does what 'git pull' does, so in hg: fetch == pull + merge and in git: pull == fetch + merge...)<br/>
+<strong>Branching... poor, poor branching...</strong><br/>
+I passed out for a quarter second when I read this in the Hg Book:<br/>
+<blockquote>
+The easiest way to isolate a “big picture” branch in Mercurial is in a dedicated repository. ... You can then clone a new shared myproject-1.0.1 repository as of that tag.
+</blockquote><br/>
+I was naive enough to think that branches living in entirely different directories was a thing of the past.  How SVN of them.  I cannot imagine living my life making local clones to effectively deal with long running branches.  The book literally says:<br/>
+<blockquote>"In most instances, isolating branches in repositories is the right approach."</blockquote><br/>
+Um, no thank you.<br/>
+It turns out that the more I get into branching stuff, the more I understand why they advocate that you clone to branch.  Everything is on one track - you can't commit something and then easily leave it there for work later and ignore it for the time being, which is what I use branches mainly for.  It's like Mercurial is a one-track mixer with some post-it notes to remember where you were and Git is a multi-track board that starts with one and then allows you to snap on new tracks at any time. Not sure if that metaphor worked, but the constraint of not having cheap, real local branches would drive me batty.<br/>
+When I tried to have two topic branches going at the same time (say a master branch and an experiment branch), it was rather painful. It worked OK until I went back and forth and then when I tried to push it gave me a:<br/>
+<pre>
+$ hg push
+pushing to http://bitbucket.org/Scotty/objective-git/
+searching for changes
+abort: push creates new remote heads!
+(did you forget to merge? use push -f to force)
+</pre><br/>
+No!  I didn't forget to merge, I want to have two branches!  So, I forced it.  Then, when I want to switch back to my other branch, it gives me this:<br/>
+<pre>
+$ hg branch newbranch
+abort: a branch of the same name already exists (use --force to override)
+</pre><br/>
+Yes, I know it does, I'm switching back to it, you bastard!  So, you _can_ have several local branches being developed at the same time, but hg <em>hates</em> it and you cannot push one of them without pushing all of them.  It looks like it stores them as sequential changesets but then stores the parents so you can technically recreate the history.  However, it seems that you _cannot_ push your A branch without also pushing your B branch.  <br/>
+That. Is. Annoying.<br/>
+<strong>Conclusion</strong><br/>
+Perhaps some of these things are simpler at first in Hg, but I don't really think they are that much easier (if at all), and the amount of flexibility you lose is so immense that I can't understand how anyone can think of Mercurial as anything other than 'Git Lite'.  Same great usability, much less functionality.  And if your answer to that is 'get X plugin', then <em>why</em> do you think you're winning the usability battle again?<br/>
+That's it - I'll keep playing with Hg and sharing my thoughts (being as how they are sooo unbiased).  In the meantime, I'll leave you with some more metaphors:<br/>
+* If DSCMs were bikes, Hg would be the Git bike with the training wheels soldered on.<br/>
+* If DSCMs were TVs, Git and Hg would turn on to the same channel, but then Git would also have cable.<br/>
+* If DSCMs were GPS units, both would have places of interest, but Git would also come with the street maps and be able to do driving directions.<br/>
+* If DSCMs were shoes, you could play basketball in either, but Git would have the pump (for when you needed extra jumping and whatnot)<br/>
+* If DSCMs were alarm clocks, they would both wake you up, but Git would also make you coffee.<br/>
+(if you have others, please share - again, the theme is that they're the same out of the box, but then the one is ultimately a lot more useful)<br/>

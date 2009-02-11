@@ -1,0 +1,58 @@
+---
+layout: post
+title: Using Git to Manage and Deploy your Rails Apps
+---
+<object type="application/x-shockwave-flash" width="506" height="335" data="http://www.vimeo.com/moogaloop.swf?clip_id=369095&amp;server=www.vimeo.com&amp;fullscreen=1&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=01AAEA">	<param name="quality" value="best" />	<param name="allowfullscreen" value="true" />	<param name="scale" value="showAll" />	<param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=369095&amp;server=www.vimeo.com&amp;fullscreen=1&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=01AAEA" /></object><br /><a href="http://www.vimeo.com/369095/l:embed_369095">Git with Rails Tutorial</a> from <a href="http://www.vimeo.com/chacon/l:embed_369095">Scott Chacon</a> on <a href="http://vimeo.com/l:embed_369095">Vimeo</a>.<br/>
+<a href="https://peepcode.com/products/git-internals-pdf">
+<img src="http://farm3.static.flickr.com/2289/2451411818_ee13dc499f_t.jpg"></a>
+<div style="background:#ded; padding: 5px;"><b>Update</b>: I just published a mini-book on Git called <a href="https://peepcode.com/products/git-internals-pdf">Git Internals</a> through PeepCode Press ($9) that goes into a lot more detail on Git and includes about an hour of associated short screencasts, if you'd like to learn more.</div>
+<br/>
+<br/><br/>
+<h2>Git and Rails</h2>
+I produced a rather in-depth (~30 min) screencast about using Git with Rails and Capistrano 2.1, since Cap now includes a Git SCM module and I've been finding that a number of Rails people are getting more interested in using Git.<br/>
+In this screencast, I talk about how to deploy and develop Rails applications using Git.  Specifically, I go over:
+<ul>
+	<li>Installing Git</li>
+	<li>Creating a new Rails App and Initializing a Git repo for it</li>
+	<li>Cloning and publishing an external repository for that app
+<ul>
+	<li>git clone --bare</li>
+	<li>scp git@gitserver:/opt/repos/notetaker.git</li>
+	<li>git remote add gitserver git@gitserver:/opt/repos/notetaker.git</li>
+	<li>cat .git/config</li>
+</ul>
+</li>
+	<li>Setting up Capistrano 2.1 with Git SCM</li>
+	<li>Deploying the App</li>
+	<li>Making a change and re-deploying</li>
+	<li>Working in a new 'testing' branch</li>
+	<li>Switching to main branch, applying a patch, redeploying</li>
+	<li>Switching back to 'testing' branch, continuing to work</li>
+	<li>Merging 'testing' into the main branch, resolving, re-deploying</li>
+	<li>Using gitk</li>
+	<li>Using :deploy_via, :copy and :remote_cache</li>
+</ul>
+<h2>Setup Files</h2>
+Here are some setup files I mention in the screencast:
+<ul>
+	<li><a href="http://jointheconversation.org/setup.zip">setup.zip</a></li>
+</ul>
+Here are most of the commands I had to run to get everything installed on my Debian etch servers I used in this screencast:
+<pre>
+  apt-get update
+  apt-get install libcurl3 libcurl3-dev libexpat libexpat-dev
+  apt-get install ruby1.8-dev rails ri irb rdoc libmysql-ruby mysql-server nginx
+             git-core build-essential sudo
+  gem install mongrel -y (twice)
+  gem install mongrel_cluster -y (twice)
+  gem install capistrano</pre>
+<h2>More Info</h2>
+For more information, I highly recommend:
+<ul>
+	<li><a href="http://peepcode.com/products/git">Peepcode on Git</a></li>
+	<li><a href="http://peepcode.com/products/capistrano-concepts">Peepcode on Capistrano</a></li>
+	<li><a href="http://smartic.us/2007/9/4/smarticast-4-rails-rumble-primer">Smarticus screencast on setting up a Rails server from scratch</a></li>
+</ul>
+Send any feedback to me at <a href="mailto://schacon@gmail.com">schacon@gmail.com</a><br/>
+<div id="disqus_thread"></div><script type="text/javascript" 
+src="http://disqus.com/forums/railsgit/embed.js"></script><noscript><a href="http://railsgit.disqus.com/?url=ref">View the forum thread.</a></noscript>

@@ -1,0 +1,8 @@
+---
+layout: post
+title: Ruby/Git and Git-Ruby
+---
+I have been putting off releasing a new <a href="http://www.jointheconversation.org/rubygit/">'git' gem</a> for a few months now because I had decided to implement some of the base functionality in pure ruby.  I have been wavering on whether having some of the commands in pure ruby and others as system calls was a good idea since I merged in the branch quite a while ago.  Well, I finally decided that for now I don't want to do that.<br/>
+I've rolled back out the pure ruby code from the 'git' gem and created a new project that aims to make roughly the same functionality, but with a command line client and gitweb application - with no system calls at all.  I feel this will make the APIs for what you can do with the git binary and what you can do without it a bit clearer.  Perhaps at some point in the future, when the pure ruby stuff is really solid and complete, I'll incorporate the two into one project again, but I'm going to wait to see what I can accomplish in pure ruby.<br/>
+To completely confuse everyone (including myself occasionally), I have named the second project <a href="http://github.com/schacon/git-ruby">'git-ruby'</a>, which is largely confusing since the original project is called <a href="http://github.com/schacon/ruby-git">'ruby-git' on GitHub</a>, yet the gems will be called 'git' for the system call one and 'git-ruby' for the ruby only version.<br/>
+My first project in developing git-ruby will be getting the simple version of the <a href="http://github.com/sr/git-wiki/tree/master">git-wiki project</a> running entirely without the git binary.
