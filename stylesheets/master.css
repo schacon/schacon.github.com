@@ -185,7 +185,7 @@ div.related {
 #content .home_box h2 {
   background: #417378;
   padding: 0.3em 0.5em;
-  border-bottom: 3px solid #262;
+  border-bottom: 3px solid #255;
   margin-bottom: 0em;
   color: white;
 }
@@ -217,7 +217,7 @@ div.related {
 
 .repo {
   background: #fff5cc;
-  border: 2px solid #dba;
+  border: 2px solid #dda;
   padding: 0.7em 1em;
   font-size: 0.8em;
   letter-spacing: -0.03em;
