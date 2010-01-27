@@ -1,0 +1,47 @@
+---
+layout: post
+title: This Year
+---
+
+So I basically stopped blogging this year, more or less since I started
+working for [GitHub](http://github.com). I've been busy, what can I say? I
+wrote a technical book through APress publishing called [Pro
+Git](http://progit.org), I've traveled all over the world speaking at dozens
+of conferences on Git and GitHub, and my wife had our first child, Josephine.
+
+I think writing the book is what really killed the blogging. I was writing for
+hours every day or two, then spending hours each day the next week reading
+over comments telling me how I was both technically wrong and generally bad at
+writing in English. Sitting down and writing a blog post wasn't really what I
+wanted to do after that.
+
+Travel-wise it's been a pretty amazing year. According to
+[Tripit](http://tripit.com/people/schacon), I've traveled 74,360 mi to 31
+cities in 11 countries over the course of 80 days this year. That's almost a
+quarter of the year on the road. This year alone I've been to Shanghai, Tokyo,
+Amsterdam, Edinburgh, Berlin (twice), Poznan, Stockholm, Oslo, London (twice),
+Barcelona, Madrid, plus San Diego, Boston, Vegas, Chicago, New York, Virginia
+and Honolulu.
+
+Physically I've changed kind of a lot, too. I got more or less in shape again
+this year, mostly due to a simple routine of running and the [hundred
+pushups](http://hundredpushups.com/) program. Though I haven't quite yet made
+it all the way to 100 pushups in a row, I can now do about 70 or 80, which is
+pretty cool. I also lost about 30 pounds this year, from a high of about 195
+when my baby was born to about 165 now.
+
+Finally, there is Josephine. When the year started, Jessica was a couple
+months pregnant and now we have a little 5 month old baby girl.  I was never
+really a fan of all the "it changes your whole life" comments, but it really
+does.  It is by far the most amazing thing that has ever happened to me. 
+She even has a little passport already and has traveled to Hawaii and Spain
+with us.
+
+Overall, this has been one of the most amazing years of my life, and I'm
+really quite sad that I didn't write more during it.  I will definitely try
+to reverse that trend over the coming year as I have more amazing trips 
+coming up (for example, Australia, New Zealand, Paris, Ireland just in the 
+next few months), and there will be no shortage of baby stories and GitHub
+amazingness.
+
+Looking forward to this year, everybody. Skál!

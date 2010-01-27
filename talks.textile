@@ -1,0 +1,134 @@
+---
+title: Scott Chacons Talks
+layout: master
+---
+
+h2. Upcoming Conference Talks
+
+<table width="100%">
+    <tr>
+      <th>When</th>
+      <th>Conference</th>
+      <th>Where</th>
+      <th>Talk Title</th>
+    </tr>
+    
+    <tr>
+      <td>Feb 2010</td>
+      <td>Symfony Live</td>
+      <td>Paris, FR</td>
+      <td>Introduction to Git</td>
+    </tr>
+
+    <tr>
+      <td>Feb 2010</td>
+      <td>PyCon</td>
+      <td>Atlanta, GA</td>
+      <td>Git and Hg</td>
+    </tr>
+
+    <tr>
+      <td>April 2010</td>
+      <td>Palmetto OSS Conference</td>
+      <td>Columbia, SC</td>
+      <td>Git and GitHub</td>
+    </tr>
+</table><br/>
+
+h2. Conference Talks I've Given
+
+<table width="100%">
+    <tr>
+      <th>When</th>
+      <th>Conference</th>
+      <th>Where</th>
+      <th>Talk Title</th>
+    </tr>
+    
+    <tr>
+      <td>Jan 2010</td>
+      <td>LinuxConf.au</td>
+      <td>Wellington, NZ</td>
+      <td>Wrangling Git</td>
+    </tr>
+
+    <tr>
+      <td>Nov 2009</td>
+      <td>Conferencia Rails</td>
+      <td>Madrid, Spain</td>
+      <td>La Diferencia Git</td>
+    </tr>
+
+    <tr>
+      <td>Nov 2009</td>
+      <td>Erlang User Conference</td>
+      <td>Stockholm, Sweden</td>
+      <td>Git Talk Intro</td>
+    </tr>
+
+    <tr>
+      <td>Oct 2009</td>
+      <td>Kung Fu Rails</td>
+      <td>Shanghai, China</td>
+      <td>Intro to Git and GitHub</td>
+    </tr>
+
+    <tr>
+      <td>Oct 2009</td>
+      <td>Aloha on Rails</td>
+      <td>Honolulu, Hawaii</td>
+      <td>The Birth of Git and Hg</td>
+    </tr>
+
+    <tr>
+      <td>July 2009</td>
+      <td>OSCON</td>
+      <td>San Jose, CA</td>
+      <td>3-hour Git Tutorial</td>
+    </tr>
+
+    <tr>
+      <td>July 2009</td>
+      <td>RubyKaigi</td>
+      <td>Tokyo, Japan</td>
+      <td>Intro to Git and GitHub</td>
+    </tr>
+
+    <tr>
+      <td>May 2009</td>
+      <td>RailsConf</td>
+      <td>Las Vegas, NV</td>
+      <td>Smacking Git Around</td>
+    </tr>
+
+    <tr>
+      <td>Mar 2009</td>
+      <td>Scotland on Rails</td>
+      <td>Edinburgh, Scotland</td>
+      <td>A Smattering of Git</td>
+    </tr>
+
+    <tr>
+      <td>Mar 2009</td>
+      <td>ApacheConf BarCamp</td>
+      <td>Amsterdam, NL</td>
+      <td>Introduction to Git</td>
+    </tr>
+
+    <tr>
+      <td>Nov 2008</td>
+      <td>RubyConf</td>
+      <td>Orlando, FL</td>
+      <td>Git from Ruby</td>
+    </tr>
+
+    <tr>
+      <td>June 2008</td>
+      <td>RailsConf</td>
+      <td>Portland, OR</td>
+      <td>Getting Git</td>
+    </tr>
+
+</table>
+
+Tech Talks : The Guardian, SAP, Loopt, Digg, Yahoo, LinkedIn, EA, Google, Pivotal Labs
