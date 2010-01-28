@@ -3,13 +3,7 @@ title: Scott Chacons Talks
 layout: master
 ---
 
-I've been doing a good amount of public speaking lately and it looks like I'll be doing
-a good amount more in the forseeable future. I really enjoy public speaking, which I 
-think is because I used to be in theater in high school and college and sort of miss that
-entertaining aspect of my life.  These conference talks are both fun for me in that I 
-get to meet a lot of people and teach new things to people, but also that I get to 
-entertain and perform for an audience again.  I think that terrifies a lot of people, but
-I rather enjoy it.
+I've been doing a good amount of public speaking lately and it looks like I'll be doing a good amount more in the forseeable future. I really enjoy public speaking, which I think is because I used to be in theater in high school and college and sort of miss that entertaining aspect of my life.  These conference talks are both fun for me in that I get to meet a lot of people and teach new things to people, but also that I get to entertain and perform for an audience again.  I think that terrifies a lot of people, but I rather enjoy it.
 
 Anyhow, here is a list of some of the gigs I have coming up and some that I have done recently.
 
@@ -17,9 +11,9 @@ h2. Upcoming Conference Talks
 
 <table width="100%">
     <tr>
-      <th width="10%">When</th>
+      <th width="15%">When</th>
       <th width="30%">Conference</th>
-      <th width="30%">Where</th>
+      <th width="25%">Where</th>
       <th width="30%">Talk Title</th>
     </tr>
     
@@ -49,9 +43,9 @@ h2. Conference Talks I've Given
 
 <table width="100%">
     <tr>
-      <th width="10%">When</th>
+      <th width="15%">When</th>
       <th width="30%">Conference</th>
-      <th width="30%">Where</th>
+      <th width="25%">Where</th>
       <th width="30%">Talk Title</th>
     </tr>
     
