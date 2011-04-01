@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Reset V. Checkout</title>
+    <link rel="stylesheet" href="custom.css" type="text/css" media="screen" charset="utf-8"/>
+  </head>
+  <body>
+
+<div class="slide title">
+<h1> Reset v. Checkout </h1>
+
+<table class="rdata">
+  <tr>
+    <th></th>
+    <th>HEAD</th>
+    <th>Index</th>
+    <th>Work Dir</th>
+    <th>WD Safe</th>
+  </tr>
+  <tr class="level">
+    <th>Commit Level</th>
+    <td colspan="4">&nbsp;</th>
+  </tr>
+  <tr class="even">
+    <th class="cmd">reset --soft [commit]</th>
+    <td class="yes">REF</td>
+    <td class="no">NO</td>
+    <td class="no">NO</td>
+    <td class="yes-wd">YES</td>
+  </tr>
+  <tr class="odd">
+    <th class="cmd">reset [commit]</th>
+    <td class="yes">REF</td>
+    <td class="yes">YES</td>
+    <td class="no">NO</td>
+    <td class="yes-wd">YES</td>
+  </tr>
+  <tr class="even">
+    <th class="cmd">reset --hard [commit]</th>
+    <td class="yes">REF</td>
+    <td class="yes">YES</td>
+    <td class="yes">YES</td>
+    <td class="no-wd">NO</td>
+  </tr>
+  <tr class="odd">
+    <th class="cmd">checkout [commit]</th>
+    <td class="yes">HEAD</td>
+    <td class="yes">YES</td>
+    <td class="yes">YES</td>
+    <td class="yes-wd">YES</td>
+  </tr>
+  <tr class="level">
+    <th>File Level</th>
+    <td colspan="4">&nbsp;</th>
+  </tr>
+  <tr class="even">
+    <th class="cmd">reset (commit) [file]</th>
+    <td class="no">NO</td>
+    <td class="yes">YES</td>
+    <td class="no">NO</td>
+    <td class="yes-wd">YES</td>
+  </tr>
+  <tr class="odd">
+    <th class="cmd">checkout (commit) [file]</th>
+    <td class="no">NO</td>
+    <td class="yes">YES</td>
+    <td class="yes">YES</td>
+    <td class="no-wd">NO</td>
+  </tr>
+</table>
+</div>
+
+  </body>
+</html>
+
