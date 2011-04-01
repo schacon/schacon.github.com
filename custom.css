@@ -127,8 +127,10 @@ table.rdata tr {
 }
 
 table.rdata tr th {
+  padding: 5px;
 }
 table.rdata tr td {
+  padding: 5px;
   border-left: 1px solid #def;
 }
 table.rdata tr td.no {
